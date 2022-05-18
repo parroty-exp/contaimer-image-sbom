@@ -1,0 +1,17 @@
+name: container-scan
+on: push
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Build docker image
+        uses: docker/build-push-action@v3.0.0
+        with:
+          context: .
+          push: false
+          tags: container-image-sbom:latest
+      - uses: anchore/sbom-action@v0
+        with:
+          image: container-image-sbom:latest
